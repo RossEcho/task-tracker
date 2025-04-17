@@ -11,20 +11,6 @@ import { Task } from './models/task.model';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  tasks: Task[] = [
-    {
-      id: 1,
-      title: 'Build Angular App',
-      dueDate: new Date(),
-      priority: 'High',
-      completed: false
-    },
-    {
-      id: 2,
-      title: 'Test Deployment',
-      dueDate: new Date(),
-      priority: 'Medium',
-      completed: false
-    }
-  ];
+  title = 'task-tracker';
+  tasks: Task[] = [];
 }
