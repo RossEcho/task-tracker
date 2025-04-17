@@ -1,0 +1,41 @@
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
+
+    <!-- Task Title -->
+    <mat-form-field appearance="fill">
+      <mat-label>Task Title</mat-label>
+      <input matInput formControlName="title" required />
+      <mat-error *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
+        Title is required
+      </mat-error>
+    </mat-form-field>
+  
+    <!-- Due Date -->
+    <mat-form-field appearance="fill">
+      <mat-label>Due Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dueDate" required />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched">
+        Due date is required
+      </mat-error>
+    </mat-form-field>
+  
+    <!-- Priority -->
+    <mat-form-field appearance="fill">
+      <mat-label>Priority</mat-label>
+      <mat-select formControlName="priority" required>
+        <mat-option value="Low">Low</mat-option>
+        <mat-option value="Medium">Medium</mat-option>
+        <mat-option value="High">High</mat-option>
+      </mat-select>
+      <mat-error *ngIf="taskForm.get('priority')?.invalid && taskForm.get('priority')?.touched">
+        Priority is required
+      </mat-error>
+    </mat-form-field>
+  
+    <!-- Submit Button -->
+    <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">
+      Add Task
+    </button>
+  </form>
+  

@@ -1,0 +1,86 @@
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 full-width">
+
+    <!-- Done Checkbox Column -->
+    <ng-container matColumnDef="done">
+      <th mat-header-cell *matHeaderCellDef> ✔ </th>
+      <td mat-cell *matCellDef="let task">
+        <mat-checkbox
+          [checked]="task.completed"
+          (change)="toggleCompleted(task)"
+          color="primary"
+        ></mat-checkbox>
+      </td>
+    </ng-container>
+  
+    <!-- Title Column -->
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+      <td mat-cell *matCellDef="let task">
+        <ng-container *ngIf="editingId !== task.id; else editTitle">
+          {{ task.title }}
+        </ng-container>
+        <ng-template #editTitle>
+          <input matInput [formControl]="titleControl" />
+        </ng-template>
+      </td>
+    </ng-container>
+  
+    <!-- Due Date Column -->
+    <ng-container matColumnDef="dueDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Due Date </th>
+      <td mat-cell *matCellDef="let task">
+        <ng-container *ngIf="editingId !== task.id; else editDate">
+          {{ task.dueDate | date:'shortDate' }}
+        </ng-container>
+        <ng-template #editDate>
+          <input matInput [matDatepicker]="picker" [formControl]="dueDateControl" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </ng-template>
+      </td>
+    </ng-container>
+  
+    <!-- Priority Column -->
+    <ng-container matColumnDef="priority">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Priority </th>
+      <td mat-cell *matCellDef="let task">
+        <ng-container *ngIf="editingId !== task.id; else editPriority">
+          <mat-chip [color]="task.priority === 'High' ? 'warn' : task.priority === 'Medium' ? 'accent' : ''">
+            {{ task.priority }}
+          </mat-chip>
+        </ng-container>
+        <ng-template #editPriority>
+          <mat-select [formControl]="priorityControl">
+            <mat-option value="Low">Low</mat-option>
+            <mat-option value="Medium">Medium</mat-option>
+            <mat-option value="High">High</mat-option>
+          </mat-select>
+        </ng-template>
+      </td>
+    </ng-container>
+  
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let task">
+        <ng-container *ngIf="editingId === task.id; else viewButtons">
+          <button mat-button color="primary" (click)="saveEdit(task)">Save</button>
+          <button mat-button (click)="cancelEdit()">Cancel</button>
+        </ng-container>
+        <ng-template #viewButtons>
+          <button mat-icon-button color="primary" (click)="startEdit(task)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteTask(task.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </ng-template>
+      </td>
+    </ng-container>
+  
+    <!-- Table Structure -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+  </table>
+  
